@@ -1,0 +1,13 @@
+DELIMITER //
+
+CREATE TRIGGER PreventMassDelete
+BEFORE DELETE ON students
+FOR EACH ROW
+BEGIN
+    IF NOT OLD.id IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Use a WHERE clause to prevent mass deletion';
+    END IF;
+END //
+
+DELIMITER ;
